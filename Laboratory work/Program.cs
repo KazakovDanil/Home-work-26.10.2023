@@ -1,5 +1,6 @@
 ﻿using Laboratory_work;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Home_work_26._10._2023
@@ -11,6 +12,29 @@ namespace Home_work_26._10._2023
             char[] chars_word = word.ToCharArray();
             Array.Reverse(chars_word);
             return String.Concat(chars_word);
+        }
+        static bool IsFormat(object something)
+        {
+            if (something is IFormattable)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        static public void SearchMail(ref string s)
+        {
+            string[] email = s.Split((char)'#');
+            if (email.Length == 2)
+            {
+                s = email[1];
+            }
+            else
+            {
+                s = "0";
+            }
         }
 
         static void Main(string[] args)
@@ -51,6 +75,36 @@ namespace Home_work_26._10._2023
             {
                 Console.WriteLine("Такого файла не существует");
             }
+            // Упражнение 8.4
+            Console.WriteLine("Упражнение 8.4");
+            Console.WriteLine("Реализовать метод, который проверяет реализует ли входной параметр метода интерфейс System.IFormattable");
+            BankAccount second_object = new BankAccount(100000, BankAccountType.Current_account);
+            if (IsFormat(second_object))
+            {
+                Console.WriteLine("Объект реализует интерфейс System.IFormattable");
+            }
+            else
+            {
+                Console.WriteLine("Объект не реализует интерфейс System.IFormattable");
+            }
+            // Домашняя работа 8.1
+            Console.WriteLine("Домашняя работа 8.1");
+            Console.WriteLine("Данная программа считывает в файле строки и из них получает адреса эл. почты, затем их записывает в другой файл");
+            string[] lines = File.ReadAllLines("ProgramFiles/FileFithNameAndEmail.txt");
+            for (int i = 0;i < lines.Length;i++)
+            {
+                string email = lines[i];
+                SearchMail(ref email);
+                if ((email != "0"))
+                {
+                    File.AppendAllText("ProgramFiles/EmailFile.txt", email + "\n");
+                }
+                else
+                {
+                    Console.WriteLine("В файле некоректные данные");
+                }
+            }
+
             Console.ReadKey();
         }
     }
